@@ -51,3 +51,39 @@ module.exports = (sequelize, DataTypes) => {
     return User
 
   };
+
+  /**
+ * @openapi
+ * components:
+ *   schemas:
+ *     Usuario:
+ *       type: object
+ *       properties:
+ *         usuario_id: 
+ *           type: integer
+ *           example: 1
+ *         nombres:
+ *           type: string
+ *           example: Armando Casas
+ *         age:
+ *            type: integer
+ *            example: 20
+ *         height:
+ *            type: decimal
+ *            example: 20.1
+ *         telefono:
+ *            type: string
+ *            example: 601-222-3333
+ *         pass:
+ *            type: string
+ *            example: fdsafgfg434sdfdsfdsfdsf
+ *         estado_usuario:
+ *           type: string
+ *           example: ACTIVO
+ *         fecha_creacion: 
+ *           type: datetime
+ *           example: 2023-01-16T13:59:40.397Z
+ *         fecha_actualizacion: 
+ *           type: datetime
+ *           example: 2023-01-16T13:59:40.397Z  
+ */

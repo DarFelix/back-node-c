@@ -24,8 +24,8 @@ const db = {}
 db.Sequelize = Sequelize
 db.sequelize = sequelize
 
-db.usuarios = require('./usuarios.model.js')(sequelize, DataTypes)
-db.citas = require('./citas.model.js')(sequelize, DataTypes)
+db.usuarios = require('./models/usuarioModel')(sequelize, DataTypes)
+db.citas = require('./models/citaModel')(sequelize, DataTypes)
 
 db.sequelize.sync()
   .then(()=>{

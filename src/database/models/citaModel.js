@@ -35,3 +35,30 @@ module.exports = (sequelize, DataTypes) => {
     return Cita
 
   };
+
+  /**
+ * @openapi
+ * components:
+ *   schemas:
+ *     Cita:
+ *       type: object
+ *       properties:
+ *         cita_id: 
+ *           type: integer
+ *           example: 1
+ *         fecha_cita: 
+ *           type: datetime
+ *           example: 2023-01-16T13:59:40.397Z  
+ *         especialidad:
+ *           type: string
+ *           example: MEDICINA GENERAL
+ *         usuario:
+ *            type: object
+ *            $ref: '#/components/schemas/Usuario'
+ *         fecha_creacion: 
+ *           type: datetime
+ *           example: 2023-01-16T13:59:40.397Z
+ *         fecha_actualizacion: 
+ *           type: datetime
+ *           example: 2023-01-16T13:59:40.397Z  
+ */

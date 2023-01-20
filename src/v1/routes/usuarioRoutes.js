@@ -1,4 +1,4 @@
-const usuarioController = require('../controllers/usuarios.controller')
+const usuarioController = require('../controllers/usuarioController')
 const router = require('express').Router()
 
 router.get('/', usuarioController.getUsuarios)

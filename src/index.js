@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config()
+require('dotenv').config();
 
 const app = express();
 
@@ -19,11 +19,14 @@ app.use(express.urlencoded({extended: true}))
 
 //routers
 
-const routerUsuarios = require('./routes/usuarios.routes')
-app.use('/api/usuarios', routerUsuarios)
+const routerUsuarios = require('./v1/routes/usuarioRoutes')
+app.use('/api/v1/usuarios', routerUsuarios)
 
-const routerCitas = require('./routes/citas.routes')
-app.use('/api/citas', routerCitas)
+const routerCitas = require('./v1/routes/citaRoutes')
+app.use('/api/v1/citas', routerCitas)
+
+// *** documentation ***
+const { swaggerDocs: V1SwaggerDocs } = require("./v1/swagger");
 
 //testing api
 
@@ -39,6 +42,7 @@ const port = process.env.PORT || 8080
 
 app.listen(port, () => {
     console.log('Server ON on port', port);
+    V1SwaggerDocs(app, port);
 });
 
 module.exports = app;
