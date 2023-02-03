@@ -41,6 +41,10 @@ module.exports = (sequelize, DataTypes) => {
       fecha_actualizacion: {
         type: DataTypes.DATE,
         allowNull: true
+      },
+      rol: {
+        type: DataTypes.STRING,
+        allowNull: true
       }
 
     },{
@@ -77,6 +81,9 @@ module.exports = (sequelize, DataTypes) => {
  *         pass:
  *            type: string
  *            example: fdsafgfg434sdfdsfdsfdsf
+ *         rol:
+ *            type: string
+ *            example: ADMIN
  *         estado_usuario:
  *           type: string
  *           example: ACTIVO

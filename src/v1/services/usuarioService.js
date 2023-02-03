@@ -1,5 +1,7 @@
 const {queryUser} = require('../../database/queries');
 const db = require('../../database/configDB');
+const bcrypt = require('bcryptjs');
+const { generarJWT } = require('../../helpers/jwt')
 
 // logic
 
@@ -22,8 +24,15 @@ const getUserByDoc = async (UserId) => {
                 replacements: { doc: UserId }
             }
         )
-
-        return user[0];
+        
+        if( user[0].length === 1 ){
+            return user[0][0];
+        }else{
+            throw {
+                status: 400,
+                message: `Usuario no existe`,
+              };
+        }
 
     } catch (error) {
         throw error;
@@ -52,8 +61,8 @@ const createUser = async (newUser) => {
     try {
 
         const userExists = await getUserByDoc(newUser.docu);
-    
-        if(userExists.length === 0){
+
+        if(!userExists){
 
             let user = await db.sequelize.query(queryUser.createUser,
                 {
@@ -64,6 +73,7 @@ const createUser = async (newUser) => {
                         height: newUser.height,
                         tel: newUser.telefono,
                         pas: newUser.pass,
+                        rol: newUser.rol,
                         estado: newUser.estado
                     }
                 })
@@ -88,7 +98,7 @@ const updateUser = async (idUser, updateUser) => {
 
         const userExists = await getUserById(idUser);
     
-        if(userExists.length !== 0){
+        if(userExists){
 
             let user = await db.sequelize.query(queryUser.updateUser,
                 {
@@ -100,6 +110,7 @@ const updateUser = async (idUser, updateUser) => {
                         height: updateUser.height,
                         tel: updateUser.telefono,
                         pas: updateUser.pass,
+                        rol: updateUser.rol,
                         estado: updateUser.estado
                     }
                 })
@@ -124,7 +135,7 @@ const deleteUser = async (id) => {
 
         const userExists = await getUserById(id);
     
-        if(userExists.length !== 0){
+        if(userExists){
 
             await db.sequelize.query(queryUser.deleteUser,
             {
@@ -143,11 +154,57 @@ const deleteUser = async (id) => {
     }
 }
 
+const authUser = async (docu, pass) => {
+    
+    try {
+
+        const usuario = await getUserByDoc(docu);
+        if (!usuario) {
+            throw {
+                status: 400,
+                message: `Datos incorrectos`,
+              };
+        }
+
+        if(!usuario.pass){
+            throw {
+                status: 400,
+                message: `Usuario no tiene contraseña, contacte al admin`,
+              };
+        }
+
+        const passOk = bcrypt.compareSync(pass, usuario.pass);
+        
+        if (!passOk) {
+            throw {
+                status: 400,
+                message: `Datos incorrectos`,
+              };
+        }
+
+        const token = generarJWT(usuario);
+
+        let result = {
+            id: usuario.usuario_id,
+            nombre: usuario.nombres,
+            rol: usuario.rol,
+            email: usuario.numero_doc,
+            access_token: token
+        }
+
+        return result;
+        
+    } catch (error) {
+        throw error;
+    }
+}
+
 module.exports={
 getAllUsers,
 getUserByDoc,
 createUser,
 updateUser,
-deleteUser
+deleteUser,
+authUser
 }
   
