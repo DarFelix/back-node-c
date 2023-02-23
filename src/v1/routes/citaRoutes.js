@@ -1,11 +1,14 @@
 const citaController = require('../controllers/citaController')
 const router = require('express').Router()
 
+const { verifyJWT } = require('../../middlewares/verifyJWT')
+const { verifyRol } = require('../../middlewares/verifyRol')
 
-router.get('/', citaController.getCitasRawQuery)
-router.get('/joinUsersSeq', citaController.getCitasJoinSeqUsuarios)
-router.get('/citasCallSP', citaController.getCitasCallSP)
-router.post('/createCita', citaController.createCita)
+
+router.get('/', [verifyJWT] , citaController.getCitasRawQuery)
+router.get('/joinUsersSeq', [verifyJWT], citaController.getCitasJoinSeqUsuarios)
+router.get('/citasCallSP', [verifyJWT, verifyRol], citaController.getCitasCallSP)
+router.post('/createCita', [verifyJWT], citaController.createCita)
 
 module.exports = router
 

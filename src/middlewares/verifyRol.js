@@ -1,5 +1,6 @@
 const verifyRol = (req, res, next) => {
-    if (req.payload.rol == 'Cliente') {
+    
+    if (req.payload.rol == 'CLIENT') {
         return res.status(401).json({ mensaje: 'Error de Autorizacion' })
     } next();
 }

@@ -58,34 +58,25 @@ const getUserById = async (Id) => {
 
 const createUser = async (newUser) => {
 
-    try {
+    try{
 
-        const userExists = await getUserByDoc(newUser.docu);
+    let user = await db.sequelize.query(queryUser.createUser,
+        {
+            replacements: {
+                nombres: newUser.nombres,
+                docu: newUser.docu,
+                age: newUser.age,
+                height: newUser.height,
+                tel: newUser.telefono,
+                pas: newUser.pass,
+                rol: newUser.rol,
+                estado: newUser.estado
+            }
+        })
 
-        if(!userExists){
+    return user[0];
 
-            let user = await db.sequelize.query(queryUser.createUser,
-                {
-                    replacements: {
-                        nombres: newUser.nombres,
-                        docu: newUser.docu,
-                        age: newUser.age,
-                        height: newUser.height,
-                        tel: newUser.telefono,
-                        pas: newUser.pass,
-                        rol: newUser.rol,
-                        estado: newUser.estado
-                    }
-                })
     
-            return user[0];
-
-        }else{
-            throw {
-                status: 400,
-                message: `User with the document number '${newUser.docu}' already exists`,
-              };
-        }
 
     } catch (error) {
         throw error;
